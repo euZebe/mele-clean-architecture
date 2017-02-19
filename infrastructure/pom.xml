@@ -5,5 +5,5 @@
     <artifactId>mele-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>persistence</artifactId>
+  <artifactId>infrastructure</artifactId>
 </project>
