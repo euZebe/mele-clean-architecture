@@ -3,6 +3,7 @@ package me.euzebe.mele.entrypoints;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javaslang.control.Option;
@@ -21,11 +22,11 @@ public class GenerateDrawEndpoint {
 		return "Hi all!";
 	}
 
+	// localhost:7777/api/generateDraw?participants=jean,eusebe,ezechiel
 	@GetMapping("/generateDraw")
-	// public Map<String, String> generateDraw(String... participants) {
-	public String generateDraw(String... participants) {
-        Option<Draw> draw = generateDrawController.generateDraw(participants);
-        return draw.toString();
+	public String generateDraw(@RequestParam("participants") String participants) {
+        Option<Draw> draw = generateDrawController.generateDraw(participants.split(","));
+        return draw.get().toString();
 	}
 
 }

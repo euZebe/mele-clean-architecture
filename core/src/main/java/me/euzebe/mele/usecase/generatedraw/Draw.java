@@ -2,7 +2,7 @@ package me.euzebe.mele.usecase.generatedraw;
 
 import java.util.UUID;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javaslang.collection.List;
 import javaslang.collection.Stream;
@@ -21,12 +21,14 @@ public class Draw {
         id = UUID.randomUUID().toString();
     }
 
-    private Draw(String... participantsName) {
+    private Draw(List<String> participantsName) {
         this();
-        this.participants = Stream.of(participantsName) //
-                .map(name -> new Participant(name)) //
-                .toList();
+        this.participants = participantsName //
+                .map(name -> new Participant(name));
+    }
 
+    private Draw(String... participantsName) {
+        this(List.of(participantsName));
     }
 
     /**
@@ -36,23 +38,26 @@ public class Draw {
      * @return an empty Option if <code>participantsName</code> is invalid, an Option containing the draw otherwise.
      */
     public static Option<Draw> generateWith(String... participantsName) {
-        return validate(participantsName) //
-                ? Option.of(new Draw(participantsName)) //
+        List<String> names = Stream.of(participantsName) //
+            .filter(StringUtils::isNotEmpty) //
+            .toList();
+        return validate(names) //
+                ? Option.of(new Draw(names)) //
                 : Option.none();
     }
 
     /**
      *
-     * @param participantsName
+     * @param names
      * @return <code>false</code> if participantsName is empty or contains duplicates, <code>true</code> otherwise.
      */
-    static boolean validate(String... participantsName) {
-        return ArrayUtils.isNotEmpty(participantsName) //
-                && inputHasNoDuplicate(participantsName);
+    static boolean validate(List<String> names) {
+        return !names.isEmpty() //
+                && inputHasNoDuplicate(names);
     }
 
-    private static boolean inputHasNoDuplicate(String... participantsName) {
-        return participantsName.length == List.of(participantsName) //
+    private static boolean inputHasNoDuplicate(List<String> names) {
+        return names.size() == names //
                 .map(name -> name.toLowerCase()) //
                 .distinct() //
                 .size();
