@@ -1,9 +1,12 @@
 package me.euzebe.mele.usecase.generatedraw;
 
+import javaslang.collection.List;
+import javaslang.control.Option;
 import lombok.Getter;
 import lombok.Setter;
+import me.euzebe.mele.JsonObject;
 
-public class Participant {
+public class Participant implements JsonObject {
     
     @Getter
 	private String name;
@@ -23,5 +26,19 @@ public class Participant {
 				.append(assigned == null ? "" : "gets " + assigned.getName()) //
 				.toString();
 	}
+
+	@Override
+	public String toJson() {
+		String assignedJson = Option.of(assigned) //
+				.flatMap(a -> Option.of(", assigned:" + wrapAttribute(a.getName()))) //
+				.getOrElse("")
+		;
+
+		return List.of("name:" + wrapAttribute(name), assignedJson) //
+				.prepend("{").append("}") //
+				.fold("", String::concat) //
+		;
+	}
+
 
 }
