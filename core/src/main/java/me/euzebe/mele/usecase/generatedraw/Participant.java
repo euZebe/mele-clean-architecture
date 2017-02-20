@@ -1,20 +1,26 @@
 package me.euzebe.mele.usecase.generatedraw;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
 public class Participant {
+    
+    @Getter
 	private String name;
+
+    @Getter
+    @Setter
 	private Participant assigned;
 
 	public Participant(String name) {
 		this.name = name;
 	}
 
+	
+	
 	public String getAssignmentToString() {
 		return new StringBuilder(name) //
-				.append(" gets ") //
-				.append(assigned.getName()) //
+				.append(assigned == null ? "" : "gets " + assigned.getName()) //
 				.toString();
 	}
 
