@@ -1,27 +1,75 @@
 package me.euzebe.mele.usecase.generatedraw;
 
-import java.util.List;
 import java.util.UUID;
+
+import org.apache.commons.lang3.ArrayUtils;
+
+import javaslang.collection.List;
+import javaslang.collection.Stream;
+import javaslang.control.Option;
+import lombok.Getter;
 
 public class Draw {
 
-	private List<Participant> participants;
-	private String id;
+    @Getter
+    private List<Participant> participants;
 
-	public Draw(List<Participant> participants) {
-		this.setParticipants(participants);
-		id = UUID.randomUUID().toString();
-	}
+    @Getter
+    private String id;
 
-	public List<Participant> getParticipants() {
-		return participants;
-	}
+    private Draw() {
+        id = UUID.randomUUID().toString();
+    }
 
-	private void setParticipants(List<Participant> participants) {
-		this.participants = participants;
-	}
+    private Draw(String... participantsName) {
+        this();
+        this.participants = Stream.of(participantsName) //
+                .map(name -> new Participant(name)) //
+                .toList();
 
-	public String getId() {
-		return id;
-	}
+    }
+
+    /**
+     * Generate a Draw if participants are valid
+     *
+     * @param participantsName - name of each participant to the draw
+     * @return an empty Option if <code>participantsName</code> is invalid, an Option containing the draw otherwise.
+     */
+    public static Option<Draw> generateWith(String... participantsName) {
+        return validate(participantsName) //
+                ? Option.of(new Draw(participantsName)) //
+                : Option.none();
+    }
+
+    /**
+     *
+     * @param participantsName
+     * @return <code>false</code> if participantsName is empty or contains duplicates, <code>true</code> otherwise.
+     */
+    static boolean validate(String... participantsName) {
+        return ArrayUtils.isNotEmpty(participantsName) //
+                && inputHasNoDuplicate(participantsName);
+    }
+
+    private static boolean inputHasNoDuplicate(String... participantsName) {
+        return participantsName.length == List.of(participantsName) //
+                .map(name -> name.toLowerCase()) //
+                .distinct() //
+                .size();
+    }
+
+    @Override
+    public String toString() {
+        String foldedParticipants = participants //
+                .map(p -> "\t" + p.getAssignmentToString()) //
+                .intersperse(",\n") //
+                .fold("", String::concat);
+
+        return new StringBuilder() //
+                .append("Draw ").append(id) //
+                .append("[\n") //
+                .append(foldedParticipants) //
+                .append("\n]") //
+                .toString();
+    }
 }
