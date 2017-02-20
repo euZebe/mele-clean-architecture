@@ -1,6 +1,7 @@
 package me.euzebe.mele.usecase.generatedraw;
 
+import javaslang.control.Option;
 
 public interface GenerateDraw {
-	public Draw generateDraw(String... participantsName);
+    public Option<Draw> generateDraw(String... participantsName);
 }
