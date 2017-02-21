@@ -3,14 +3,16 @@ package me.euzebe.mele.usecase.generatedraw;
 import java.util.Random;
 import java.util.UUID;
 
-import org.apache.commons.lang3.StringUtils;
-
 import javaslang.collection.List;
 import javaslang.collection.Stream;
 import javaslang.control.Option;
 import lombok.Getter;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class Draw {
+
+	public static final Draw EMPTY = new Draw("emptyDraw");
 
 	@Getter
 	private List<Participant> participants;
@@ -19,7 +21,11 @@ public class Draw {
 	private String id;
 
 	private Draw() {
-		id = UUID.randomUUID().toString();
+		this(UUID.randomUUID().toString());
+	}
+
+	private Draw(String uuid) {
+		this.id = uuid;
 	}
 
 	private Draw(List<String> participantsName) {
@@ -74,7 +80,7 @@ public class Draw {
 		Random random = new Random();
 		this.participants.forEach(p -> {
 			int randomIndex = random.nextInt(this.participants.size());
-			p.setAssigned(this.participants.get(randomIndex));
+			p.setAssigned(this.participants.get(randomIndex).getName());
 		});
 	}
 

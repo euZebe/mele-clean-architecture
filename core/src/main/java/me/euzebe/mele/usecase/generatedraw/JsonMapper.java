@@ -40,7 +40,7 @@ public class JsonMapper {
 
     public String toJson(Participant participant) {
         String assignedJson = Option.of(participant.getAssigned()) //
-                .flatMap(a -> Option.of(", assigned:" + wrapAttribute(a.getName()))) //
+				.flatMap(a -> Option.of(", assigned:" + wrapAttribute(a))) //
                 .getOrElse("")
         ;
 

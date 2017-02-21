@@ -23,6 +23,9 @@ public class GenerateDrawEndpoint {
     @Autowired
     private JsonMapper mapper;
 
+	@Autowired
+	private DrawMapper drawMapper;
+
 	@GetMapping("/")
 	public String sayHi() {
 		return "Hi all!";
@@ -37,10 +40,10 @@ public class GenerateDrawEndpoint {
 	}
 
 	@PostMapping(path = "/generateDraw", produces = "application/json")
-	public Draw generate(@RequestBody DrawRequest request) {
+	public DrawResponse generate(@RequestBody DrawRequest request) {
 		Option<Draw> draw = generateDrawController.generateDraw(request.getParticipants());
 
-		return draw.getOrElse((Draw) null);
+		return drawMapper.toResponse(draw.getOrElse(Draw.EMPTY));
 	}
 
 }

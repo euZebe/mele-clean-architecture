@@ -10,7 +10,7 @@ public class Participant {
 
     @Getter
     @Setter
-	private Participant assigned;
+	private String assigned;
 
 	public Participant(String name) {
 		this.name = name;
@@ -20,7 +20,7 @@ public class Participant {
 
 	public String getAssignmentToString() {
 		return new StringBuilder(name) //
-				.append(assigned == null ? "" : "gets " + assigned.getName()) //
+				.append(assigned == null ? "" : "gets " + assigned) //
 				.toString();
 	}
 }

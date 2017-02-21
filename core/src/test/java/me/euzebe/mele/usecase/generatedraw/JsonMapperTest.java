@@ -16,7 +16,7 @@ public class JsonMapperTest {
 
 	@Test
 	public void should_contain_assigned_if_exists() {
-		p.setAssigned(new Participant("Eusèbe"));
+		p.setAssigned("Eusèbe");
 		Assertions.assertThat(mapper.toJson(p)).isEqualTo("{name:\"Niobé\", assigned:\"Eusèbe\"}");
 	}
 
