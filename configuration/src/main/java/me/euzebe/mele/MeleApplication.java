@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import me.euzebe.mele.infrastructure.DrawRepository;
+import me.euzebe.mele.spi.DrawsCatalog;
 import me.euzebe.mele.usecase.generatedraw.GenerateDraw;
 import me.euzebe.mele.usecase.generatedraw.GenerateDrawController;
 import me.euzebe.mele.usecase.generatedraw.JsonMapper;
@@ -17,11 +19,16 @@ public class MeleApplication {
 
 	@Bean
 	GenerateDraw getGenerateDrawBean() {
-	    return new GenerateDrawController();
+	    return new GenerateDrawController(getDrawsCatalog());
 	}
 
 	@Bean
 	JsonMapper getJsonMapper() {
 	    return new JsonMapper();
+	}
+
+	@Bean
+	DrawsCatalog getDrawsCatalog() {
+	    return new DrawRepository();
 	}
 }

@@ -19,6 +19,11 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
+            <groupId>me.euzebe.mele</groupId>
+            <artifactId>infrastructure</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
             <version>${spring.boot.version}</version>
