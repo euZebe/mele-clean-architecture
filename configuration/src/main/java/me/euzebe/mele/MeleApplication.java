@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 
 import me.euzebe.mele.usecase.generatedraw.GenerateDraw;
 import me.euzebe.mele.usecase.generatedraw.GenerateDrawController;
+import me.euzebe.mele.usecase.generatedraw.JsonMapper;
 
 @SpringBootApplication
 public class MeleApplication {
@@ -17,5 +18,10 @@ public class MeleApplication {
 	@Bean
 	GenerateDraw getGenerateDrawBean() {
 	    return new GenerateDrawController();
+	}
+
+	@Bean
+	JsonMapper getJsonMapper() {
+	    return new JsonMapper();
 	}
 }

@@ -3,15 +3,14 @@ package me.euzebe.mele.usecase.generatedraw;
 import java.util.Random;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javaslang.collection.List;
 import javaslang.collection.Stream;
 import javaslang.control.Option;
 import lombok.Getter;
-import me.euzebe.mele.JsonObject;
 
-import org.apache.commons.lang3.StringUtils;
-
-public class Draw implements JsonObject {
+public class Draw {
 
 	@Getter
 	private List<Participant> participants;
@@ -92,14 +91,5 @@ public class Draw implements JsonObject {
 				.append(foldedParticipants) //
 				.append("\n]") //
 				.toString();
-	}
-
-	@Override
-	public String toJson() {
-		String content = List.of("id:" + wrapAttribute(id), "participants:" + wrapArray(participants)) //
-				.intersperse(", ") //
-				.fold("", String::concat);
-
-		return wrapElement(content);
 	}
 }
