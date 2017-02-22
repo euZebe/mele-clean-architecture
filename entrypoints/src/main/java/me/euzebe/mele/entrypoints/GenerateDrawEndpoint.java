@@ -2,6 +2,7 @@ package me.euzebe.mele.entrypoints;
 
 import javaslang.control.Option;
 import me.euzebe.mele.usecase.generatedraw.Draw;
+import me.euzebe.mele.usecase.generatedraw.DrawWithRandom;
 import me.euzebe.mele.usecase.generatedraw.GenerateDraw;
 import me.euzebe.mele.usecase.generatedraw.JsonMapper;
 
@@ -43,7 +44,7 @@ public class GenerateDrawEndpoint {
 	public DrawResponse generate(@RequestBody DrawRequest request) {
 		Option<Draw> draw = generateDrawController.generateDraw(request.getParticipants());
 
-		return drawMapper.toResponse(draw.getOrElse(Draw.EMPTY));
+		return drawMapper.toResponse(draw.getOrElse(DrawWithRandom.EMPTY));
 	}
 
 }

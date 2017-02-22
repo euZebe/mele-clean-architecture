@@ -14,7 +14,7 @@ public class GenerateDrawController implements GenerateDraw {
     @Override
     public Option<Draw> generateDraw(String... participantsName) {
         System.out.println("generating draw...");
-        Option<Draw> optionalDraw = Draw.generateWith(participantsName);
+        Option<Draw> optionalDraw = DrawWithRandom.generateWith(participantsName);
 
         optionalDraw.peek(drawsCatalog::add);
 

@@ -2,12 +2,12 @@ package me.euzebe.mele.entrypoints;
 
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import javaslang.Tuple;
 import javaslang.collection.List;
 import me.euzebe.mele.usecase.generatedraw.Draw;
 import me.euzebe.mele.usecase.generatedraw.Participant;
-
-import org.springframework.stereotype.Component;
 
 @Component
 public class DrawMapper {

@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import me.euzebe.mele.infrastructure.DrawRepository;
+import me.euzebe.mele.infrastructure.DrawMemoryRepository;
 import me.euzebe.mele.spi.DrawsCatalog;
 import me.euzebe.mele.usecase.generatedraw.GenerateDraw;
 import me.euzebe.mele.usecase.generatedraw.GenerateDrawController;
@@ -29,6 +29,6 @@ public class MeleApplication {
 
 	@Bean
 	DrawsCatalog getDrawsCatalog() {
-	    return new DrawRepository();
+	    return new DrawMemoryRepository();
 	}
 }
