@@ -13,16 +13,15 @@ import org.springframework.stereotype.Component;
 public class DrawMapper {
 
 	public DrawResponse toResponse(Draw draw) {
-		return DrawResponse.builder() //
-				.drawID(draw.getId()) //
-				.assignments(toHashMap(draw.getParticipants())) //
-				.build();
+		return new DrawResponse() //
+				.withDrawID(draw.getId()) //
+				.withAssignments(toHashMap(draw.getParticipants())) //
+		;
 	}
 
 	private Map<String, String> toHashMap(List<Participant> participants) {
-		participants //
+		return participants //
 				.toMap(p -> Tuple.of(p.getName(), p.getAssigned())) //
 				.toJavaMap();
-		return null;
 	}
 }
