@@ -1,11 +1,5 @@
 package me.euzebe.mele.entrypoints;
 
-import javaslang.control.Option;
-import me.euzebe.mele.usecase.generatedraw.Draw;
-import me.euzebe.mele.usecase.generatedraw.DrawWithRandom;
-import me.euzebe.mele.usecase.generatedraw.GenerateDraw;
-import me.euzebe.mele.usecase.generatedraw.JsonMapper;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +7,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javaslang.control.Option;
+import me.euzebe.mele.usecase.generatedraw.Draw;
+import me.euzebe.mele.usecase.generatedraw.DrawWithRandom;
+import me.euzebe.mele.usecase.generatedraw.GenerateDraw;
+import me.euzebe.mele.usecase.generatedraw.JsonMapper;
 
 @RestController
 @RequestMapping("/api")

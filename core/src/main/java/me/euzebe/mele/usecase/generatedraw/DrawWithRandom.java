@@ -15,7 +15,7 @@ public class DrawWithRandom implements Draw {
 	public static final DrawWithRandom EMPTY = new DrawWithRandom("emptyDraw");
 
 	@Getter
-	private List<Participant> participants;
+	private List<Participant> participants = List.empty();
 
 	@Getter
 	private String id;

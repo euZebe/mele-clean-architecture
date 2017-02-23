@@ -42,6 +42,14 @@
 			<version>${spring.boot.version}</version>
 			<scope>test</scope>
 		</dependency>
+        
+        
+        <dependency>
+            <groupId>io.github.benas</groupId>
+            <artifactId>random-beans</artifactId>
+            <version>3.5.0</version>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 
 	<build>
