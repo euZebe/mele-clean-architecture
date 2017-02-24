@@ -1,11 +1,10 @@
 package me.euzebe.mele.usecase.generatedraw;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Test;
-
 import javaslang.collection.List;
 import javaslang.control.Option;
+
+import org.junit.Test;
 
 public class DrawTest {
 
@@ -29,5 +28,13 @@ public class DrawTest {
         Option<Draw> draw = DrawWithRandom.generateWith("Niobé", "Ernest");
         System.out.println(draw.get());
         assertThat(draw.isDefined()).isTrue();
+		assertThat(draw.get().getId()).isNotNull();
+		assertThat(draw.get().getParticipants().size()).isEqualTo(2);
     }
+
+	@Test
+	public void check_EMPTY_draw() {
+		assertThat(Draw.EMPTY.getId()).isNull();
+		assertThat(Draw.EMPTY.getParticipants()).isNull();
+	}
 }

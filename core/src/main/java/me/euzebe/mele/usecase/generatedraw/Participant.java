@@ -20,7 +20,7 @@ public class Participant {
 
 	public String getAssignmentToString() {
 		return new StringBuilder(name) //
-				.append(assigned == null ? "" : "gets " + assigned) //
+				.append(assigned == null ? "" : " gets " + assigned) //
 				.toString();
 	}
 }
