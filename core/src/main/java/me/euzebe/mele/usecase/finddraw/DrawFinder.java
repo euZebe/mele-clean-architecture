@@ -3,7 +3,7 @@ package me.euzebe.mele.usecase.finddraw;
 import me.euzebe.mele.spi.DrawsCatalog;
 import me.euzebe.mele.usecase.generatedraw.Draw;
 
-public class DrawFinder implements ListDraws {
+public class DrawFinder implements IFindDraws {
 
     private DrawsCatalog catalog;
 

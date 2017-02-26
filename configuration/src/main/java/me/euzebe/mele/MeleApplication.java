@@ -2,7 +2,7 @@ package me.euzebe.mele;
 
 import me.euzebe.mele.infrastructure.DrawMemoryRepository;
 import me.euzebe.mele.spi.DrawsCatalog;
-import me.euzebe.mele.usecase.generatedraw.GenerateDraw;
+import me.euzebe.mele.usecase.generatedraw.IGenerateDraws;
 import me.euzebe.mele.usecase.generatedraw.GenerateDrawController;
 
 import org.springframework.boot.SpringApplication;
@@ -17,7 +17,7 @@ public class MeleApplication {
 	}
 
 	@Bean
-	GenerateDraw getGenerateDrawBean() {
+	IGenerateDraws getGenerateDrawBean() {
 	    return new GenerateDrawController(getDrawsCatalog());
 	}
 

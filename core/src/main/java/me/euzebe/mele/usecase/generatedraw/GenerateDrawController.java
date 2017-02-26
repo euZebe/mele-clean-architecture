@@ -3,7 +3,7 @@ package me.euzebe.mele.usecase.generatedraw;
 import javaslang.control.Option;
 import me.euzebe.mele.spi.DrawsCatalog;
 
-public class GenerateDrawController implements GenerateDraw {
+public class GenerateDrawController implements IGenerateDraws {
 
     private DrawsCatalog drawsCatalog;
 

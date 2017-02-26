@@ -3,7 +3,7 @@ package me.euzebe.mele.entrypoints;
 import javaslang.control.Option;
 import me.euzebe.mele.usecase.generatedraw.Draw;
 import me.euzebe.mele.usecase.generatedraw.DrawWithRandom;
-import me.euzebe.mele.usecase.generatedraw.GenerateDraw;
+import me.euzebe.mele.usecase.generatedraw.IGenerateDraws;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GenerateDrawEndpoint {
 
     @Autowired
-    private GenerateDraw generateDrawController;
+    private IGenerateDraws generateDrawController;
 
 
 	@Autowired
