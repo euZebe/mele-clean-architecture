@@ -1,4 +1,4 @@
-package me.euzebe.mele.entrypoints;
+package me.euzebe.mele.entrypoints.draw;
 
 import javaslang.control.Option;
 import me.euzebe.mele.usecase.generatedraw.Draw;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/mele/api")
 public class GenerateDrawEndpoint {
 
     @Autowired

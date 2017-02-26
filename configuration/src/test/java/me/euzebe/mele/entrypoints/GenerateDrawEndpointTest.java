@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Random;
 
+import me.euzebe.mele.entrypoints.draw.DrawRequest;
+import me.euzebe.mele.entrypoints.draw.DrawResponse;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
