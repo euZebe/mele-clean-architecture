@@ -24,3 +24,5 @@ Example:
 - The persistence feature is located in the infrastructure module. Depends on the core module.
 - Configuration module contains the SpringBoot configuration. Depends on all others modules.
 
+## API documentation
+- the meLe API can be tested using [Swagger](http://swagger.io/swagger-ui/) on http://\[server]:\[port]/mele/api-docs endpoint (for example [http://localhost:7777/api-docs](http://localhost:7777/mele/api-docs))

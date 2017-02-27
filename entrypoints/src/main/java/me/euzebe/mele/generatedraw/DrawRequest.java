@@ -1,4 +1,4 @@
-package me.euzebe.mele.entrypoints.draw;
+package me.euzebe.mele.generatedraw;
 
 import lombok.Data;
 

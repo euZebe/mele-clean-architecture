@@ -4,12 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Random;
 
-import me.euzebe.mele.entrypoints.draw.DrawRequest;
-import me.euzebe.mele.entrypoints.draw.DrawResponse;
+import me.euzebe.mele.generatedraw.DrawRequest;
+import me.euzebe.mele.generatedraw.DrawResponse;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +22,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class GenerateDrawEndpointTest {
+
+	private static final Logger logger = LoggerFactory.getLogger("tests");
 
     @LocalServerPort
     private int port;
@@ -38,9 +42,9 @@ public class GenerateDrawEndpointTest {
     @Test
     public void should_return_a_draw_when_input_is_valid() {
         DrawRequest request = new DrawRequest().withParticipants(
-                RandomStringUtils.random(random.nextInt(20)), //
-                RandomStringUtils.random(random.nextInt(20)),  //
-                RandomStringUtils.random(random.nextInt(20)));
+                generateParticipantName(), //
+                generateParticipantName(),  //
+                generateParticipantName());
         DrawResponse drawResponse = restTemplate.postForObject(getEndpointBaseRoute() + "generateDraw", request,
                 DrawResponse.class);
 
@@ -53,6 +57,12 @@ public class GenerateDrawEndpointTest {
         });
     }
 
+	private String generateParticipantName() {
+		String randomName = RandomStringUtils.random(random.nextInt(20));
+		logger.info("new random participant name generated: " + randomName);
+		return randomName;
+	}
+
     @Test
     public void should_return_no_draw_when_no_participant_is_defined() {
         DrawResponse drawResponse = restTemplate.postForObject(getEndpointBaseRoute() + "generateDraw", null,
@@ -63,7 +73,7 @@ public class GenerateDrawEndpointTest {
     }
 
     private String getEndpointBaseRoute() {
-        return "http://localhost:" + port + "/api/";
+		return "http://localhost:" + port + "/mele/";
     }
 
 }
