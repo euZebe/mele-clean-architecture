@@ -10,6 +10,8 @@ import me.euzebe.mele.usecase.generatedraw.Draw;
 import me.euzebe.mele.usecase.generatedraw.DrawWithRandom;
 import me.euzebe.mele.usecase.generatedraw.IGenerateDraws;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,9 +21,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 @RestController
 @RequestMapping("/mele")
 public class GenerateDrawEndpoint {
+
+	private static final Logger logger = LoggerFactory.getLogger(GenerateDrawEndpoint.class);
 
     @Autowired
     private IGenerateDraws generateDrawController;
@@ -42,13 +48,15 @@ public class GenerateDrawEndpoint {
 		return drawMapper.toResponse(draw.getOrElse(DrawWithRandom.EMPTY));
 	}
 
+
+	@ApiIgnore
 	@GetMapping(value = "/api-docs")
 	@ResponseStatus(HttpStatus.OK)
-	public void method(HttpServletResponse httpServletResponse) {
+	public void redirectToSwaggerRootPage(HttpServletResponse httpServletResponse) {
 		try {
 			httpServletResponse.sendRedirect("/swagger/index.html");
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException exception) {
+			logger.error("error while redirecting to swagger root page", exception);
 		}
 	}
 
