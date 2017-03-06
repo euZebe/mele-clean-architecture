@@ -2,12 +2,12 @@ package me.euzebe.mele.generatedraw;
 
 import java.util.Map;
 
-import org.springframework.stereotype.Component;
-
 import javaslang.Tuple;
-import javaslang.collection.List;
+import javaslang.collection.Seq;
 import me.euzebe.mele.usecase.generatedraw.Draw;
 import me.euzebe.mele.usecase.generatedraw.Participant;
+
+import org.springframework.stereotype.Component;
 
 @Component
 public class DrawMapper {
@@ -19,7 +19,7 @@ public class DrawMapper {
 		;
 	}
 
-	private Map<String, String> toHashMap(List<Participant> participants) {
+	private Map<String, String> toHashMap(Seq<Participant> participants) {
 		return participants //
 				.toMap(p -> Tuple.of(p.getName(), p.getAssigned())) //
 				.toJavaMap();

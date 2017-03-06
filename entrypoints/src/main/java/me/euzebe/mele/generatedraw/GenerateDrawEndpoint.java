@@ -1,5 +1,7 @@
 package me.euzebe.mele.generatedraw;
 
+import io.swagger.annotations.ApiOperation;
+
 import java.io.IOException;
 
 import javaslang.control.Option;
@@ -41,6 +43,7 @@ public class GenerateDrawEndpoint {
 		return "Hi all!";
 	}
 
+	@ApiOperation(value = "generate a draw according to given participants and constraints")
 	@PostMapping(path = "/generateDraw", produces = "application/json")
 	public DrawResponse generate(@RequestBody DrawRequest request) {
 		Option<Draw> draw = generateDrawController.generateDraw(request.getParticipants());

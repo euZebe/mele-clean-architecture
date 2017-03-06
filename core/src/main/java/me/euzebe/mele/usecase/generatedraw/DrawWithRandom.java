@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import javaslang.collection.List;
-import javaslang.collection.Stream;
+import javaslang.collection.Seq;
 import javaslang.control.Option;
 import lombok.Getter;
 
@@ -13,7 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 public class DrawWithRandom implements Draw {
 
 	@Getter
-	private List<Participant> participants = List.empty();
+	private Seq<Participant> participants = List.empty();
 
 	@Getter
 	private String id;
@@ -26,7 +26,7 @@ public class DrawWithRandom implements Draw {
 		this.id = uuid;
 	}
 
-	private DrawWithRandom(List<String> participantsName) {
+	private DrawWithRandom(Seq<String> participantsName) {
 		this();
 		this.participants = participantsName //
 				.map(name -> new Participant(name));
@@ -43,11 +43,14 @@ public class DrawWithRandom implements Draw {
 	 *         Option containing the draw otherwise.
 	 */
 	public static Option<Draw> generateWith(String... participantsName) {
-		List<String> names = Stream.of(participantsName) //
-				.filter(StringUtils::isNotEmpty) //
+		List<String> names = List.of(participantsName) //
 				.toList();
 
-		return validate(names) //
+		return generateWith(names, List.empty());
+	}
+
+	public static Option<Draw> generateWith(Seq<String> names, Seq<NotAllowedConstraint> constraints) {
+		return validate(names, constraints) //
 		? Option.of(new DrawWithRandom(names)) //
 				: Option.none();
 	}
@@ -58,12 +61,25 @@ public class DrawWithRandom implements Draw {
 	 * @return <code>false</code> if participantsName is empty or contains
 	 *         duplicates, <code>true</code> otherwise.
 	 */
-	static boolean validate(List<String> names) {
+	static boolean validate(Seq<String> names) {
 		return !names.isEmpty() //
+				&& names.filter(StringUtils::isNotEmpty).isDefined() //
 				&& inputHasNoDuplicate(names);
 	}
 
-	private static boolean inputHasNoDuplicate(List<String> names) {
+	static boolean validate(Seq<String> names, Seq<NotAllowedConstraint> constraints) {
+		return validate(names) && constraintsHaveOnlyExistingNames(constraints, names);
+	}
+
+	static boolean constraintsHaveOnlyExistingNames(Seq<NotAllowedConstraint> constraints, Seq<String> names) {
+		return constraints.isEmpty() //
+				|| constraints.filter( //
+						constraint -> names.contains(constraint.getOwner()) //
+								&& names.contains(constraint.getNotToBeAssigned()) //
+				).isDefined();
+	}
+
+	private static boolean inputHasNoDuplicate(Seq<String> names) {
 		return names.size() == names //
 				.map(name -> name.toLowerCase()) //
 				.distinct() //

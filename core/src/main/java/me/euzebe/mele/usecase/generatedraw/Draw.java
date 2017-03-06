@@ -1,12 +1,13 @@
 package me.euzebe.mele.usecase.generatedraw;
 
 import javaslang.collection.List;
+import javaslang.collection.Seq;
 
 public interface Draw {
 
 	public String getId();
 
-    public List<Participant> getParticipants();
+	public Seq<Participant> getParticipants();
 
 	public static final Draw EMPTY = new Draw() {
 		@Override
