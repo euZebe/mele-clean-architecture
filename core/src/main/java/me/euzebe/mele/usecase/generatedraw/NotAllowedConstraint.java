@@ -17,6 +17,6 @@ public class NotAllowedConstraint {
 
 	@Override
 	public String toString() {
-		return notToBeAssigned + "is not assigned to " + owner;
+		return notToBeAssigned + " is not assigned to " + owner;
 	}
 }
