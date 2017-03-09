@@ -4,6 +4,14 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+import javaslang.Tuple2;
+import javaslang.collection.HashMap;
+import javaslang.collection.HashSet;
+import javaslang.collection.LinkedHashMap;
+import javaslang.collection.Seq;
+import javaslang.control.Option;
+import lombok.Getter;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jacop.constraints.Alldifferent;
 import org.jacop.constraints.Among;
@@ -17,14 +25,6 @@ import org.jacop.search.IndomainMin;
 import org.jacop.search.InputOrderSelect;
 import org.jacop.search.Search;
 import org.jacop.search.SelectChoicePoint;
-
-import javaslang.Tuple2;
-import javaslang.collection.HashMap;
-import javaslang.collection.HashSet;
-import javaslang.collection.LinkedHashMap;
-import javaslang.collection.Seq;
-import javaslang.control.Option;
-import lombok.Getter;
 
 public class DrawWithRandom implements Draw {
 
@@ -100,9 +100,9 @@ public class DrawWithRandom implements Draw {
 	static boolean constraintsHaveOnlyExistingNames(Seq<NotAllowedConstraint> constraints, Seq<String> names) {
 		return constraints.isEmpty() //
 				|| constraints.filter( //
-						constraint -> names.contains(constraint.getOwner()) //
-								&& names.contains(constraint.getNotToBeAssigned()) //
-				).isDefined();
+						constraint -> !names.contains(constraint.getOwner()) //
+								|| !names.contains(constraint.getNotToBeAssigned()) //
+				).isEmpty();
 	}
 
 	private static boolean inputHasNoDuplicate(Seq<String> names) {

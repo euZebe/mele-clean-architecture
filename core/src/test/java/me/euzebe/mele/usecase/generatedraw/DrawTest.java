@@ -1,12 +1,11 @@
 package me.euzebe.mele.usecase.generatedraw;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Test;
-
 import javaslang.collection.List;
 import javaslang.collection.Seq;
 import javaslang.control.Option;
+
+import org.junit.Test;
 
 public class DrawTest {
 
@@ -63,7 +62,7 @@ public class DrawTest {
     public void should_return_true_when_all_constraint_names_are_contained_in_participants() {
         Seq<NotAllowedConstraint> constraints = List.of(new NotAllowedConstraint("Niobé", "Ernest"),
                 new NotAllowedConstraint("Eusèbe", "Ernest"));
-        Seq<String> names = List.of("NIobé", "Eusèbe", "Ernest");
+		Seq<String> names = List.of("Niobé", "Eusèbe", "Ernest");
         assertThat(DrawWithRandom.constraintsHaveOnlyExistingNames(constraints, names)).isTrue();
     }
 
