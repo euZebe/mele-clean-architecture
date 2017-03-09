@@ -1,15 +1,15 @@
 package me.euzebe.mele.usecase.generatedraw;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
 public class NotAllowedConstraint {
+
+    @Getter
 	private String owner;
+
+    @Getter
 	private String notToBeAssigned;
 
-	public NotAllowedConstraint() {
-	}
-	
 	public NotAllowedConstraint(String owner, String notToBeAssociated) {
 		this.owner = owner;
 		this.notToBeAssigned = notToBeAssociated;

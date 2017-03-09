@@ -16,9 +16,8 @@ public class Participant {
 		this.name = name;
 	}
 
-
-
-	public String getAssignmentToString() {
+	@Override
+	public String toString() {
 		return new StringBuilder(name) //
 				.append(assigned == null ? "" : " gets " + assigned) //
 				.toString();

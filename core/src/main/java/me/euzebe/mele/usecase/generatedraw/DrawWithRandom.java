@@ -1,38 +1,47 @@
 package me.euzebe.mele.usecase.generatedraw;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
+import org.apache.commons.lang3.StringUtils;
+import org.jacop.constraints.Alldifferent;
+import org.jacop.constraints.Among;
+import org.jacop.core.Domain;
+import org.jacop.core.IntVar;
+import org.jacop.core.IntervalDomain;
+import org.jacop.core.SmallDenseDomain;
+import org.jacop.core.Store;
+import org.jacop.search.DepthFirstSearch;
+import org.jacop.search.IndomainMin;
+import org.jacop.search.InputOrderSelect;
+import org.jacop.search.Search;
+import org.jacop.search.SelectChoicePoint;
+
 import javaslang.Tuple2;
+import javaslang.collection.HashMap;
+import javaslang.collection.HashSet;
 import javaslang.collection.LinkedHashMap;
 import javaslang.collection.List;
 import javaslang.collection.Seq;
 import javaslang.control.Option;
 import lombok.Getter;
 
-import org.apache.commons.lang3.StringUtils;
-import org.jacop.constraints.Alldifferent;
-import org.jacop.constraints.Among;
-import org.jacop.core.IntVar;
-import org.jacop.core.IntervalDomain;
-import org.jacop.core.Store;
-
 public class DrawWithRandom implements Draw {
 
 	@Getter
 	private LinkedHashMap<Integer, Participant> participantsByIndex = LinkedHashMap.empty();
 
-	private HashMap<String, Integer> participantsByName = new HashMap<>();
+	private HashMap<String, Integer> participantsByName = HashMap.empty();
 
 	@Getter
 	private String id;
 
-	private HashSet<Tuple2<Integer, Integer>> byIndexConstraints = new HashSet<>();
+	private Boolean solutionFound;
 
-	private DrawWithRandom() {
+	private HashSet<Tuple2<Integer, Integer>> byIndexConstraints = HashSet.empty();
+
+	protected DrawWithRandom() {
 		this(UUID.randomUUID().toString());
 	}
 
@@ -44,17 +53,24 @@ public class DrawWithRandom implements Draw {
 		this();
 		int index = 0;
 		for (String name : participantsNames) {
-			participantsByIndex.put(index, new Participant(name));
-			participantsByName.put(name, index);
+		    participantsByIndex = participantsByIndex.put(index, new Participant(name));
+		    participantsByName = participantsByName.put(name, index);
 			++index;
 		}
 
-		constraints.forEach(c -> byIndexConstraints.add(new Tuple2<Integer, Integer>( //
-				participantsByName.get(c.getOwner()), //
-				participantsByName.get(c.getNotToBeAssigned())) //
-				));
+		constraints.forEach(c -> {
+		    byIndexConstraints = byIndexConstraints.add(new Tuple2<Integer, Integer>( //
+            		participantsByName.get(c.getOwner()).get(), //
+            		participantsByName.get(c.getNotToBeAssigned()).get()) //
+            		);
+        });
 
-		defineAssignments();
+		try {
+            defineAssignments();
+            solutionFound = true;
+        } catch (NoSolutionException e) {
+            solutionFound = false;
+        }
 	}
 
 	/**
@@ -77,6 +93,14 @@ public class DrawWithRandom implements Draw {
 		? Option.of(new DrawWithRandom(names, constraints)) //
 				: Option.none();
 	}
+
+    public static Option<Draw> generateWithoutSelfAssignment(Seq<String> names, Seq<NotAllowedConstraint> constraints) {
+        Seq<NotAllowedConstraint> constraintsWithoutSelfAssignment = names //
+                .map(name -> new NotAllowedConstraint(name, name)) //
+                .appendAll(constraints);
+
+        return DrawWithRandom.generateWith(names, constraintsWithoutSelfAssignment);
+    }
 
 	/**
 	 *
@@ -109,7 +133,7 @@ public class DrawWithRandom implements Draw {
 				.size();
 	}
 
-	private void defineAssignments() {
+	private void defineAssignments() throws NoSolutionException {
 		Store store = new Store();
 		IntVar[] vars = IntStream.range(0, participantsByIndex.size()) //
 				.mapToObj(i -> {
@@ -125,11 +149,28 @@ public class DrawWithRandom implements Draw {
 			addNotAllowedConstraint(store, byIndexConstraints.size(), vars[constraint._1], constraint._2);
 		});
 
-		Random random = new Random();
-		this.participantsByIndex.forEach(p -> {
-			int randomIndex = random.nextInt(this.participantsByIndex.size());
-			p._2.setAssigned(this.participantsByIndex.get(randomIndex).get().getName());
-		});
+		//
+        Search<IntVar> search = new DepthFirstSearch<IntVar>();
+        search.getSolutionListener().searchAll(true);
+        search.getSolutionListener().recordSolutions(true);
+        SelectChoicePoint<IntVar> select = new InputOrderSelect<IntVar>(store, vars, new IndomainMin<IntVar>());
+        // effectue la recherche
+        search.labeling(store, select);
+
+        if (search.getSolutionListener().solutionsNo() == 0) {
+            throw new NoSolutionException();
+        }
+
+        int randomIndex = new Random().nextInt(search.getSolutionListener().solutionsNo()) + 1;
+        Domain[] solution = search.getSolution(randomIndex);
+
+
+        for (int index = 0; index < solution.length; index++) {
+            int assigneeIndex = ((SmallDenseDomain) solution[index]).min;
+            participantsByIndex.get(index) //
+                .getOrElseThrow(() -> new IllegalArgumentException())
+                .setAssigned(participantsByIndex.get(assigneeIndex).get().getName());
+		};
 	}
 
 	private void addNotAllowedConstraint(Store store, int participantsSize, IntVar var, int blocked) {
@@ -145,7 +186,7 @@ public class DrawWithRandom implements Draw {
 	@Override
 	public String toString() {
 		String foldedParticipants = participantsByIndex //
-				.map(p -> "\t" + p._2.getAssignmentToString()) //
+				.map(p -> "\t" + p._2.toString()) //
 				.intersperse(",\n") //
 				.fold("", String::concat);
 
@@ -162,4 +203,8 @@ public class DrawWithRandom implements Draw {
 		return participantsByIndex.toStream() //
 				.map(tuple -> tuple._2);
 	}
+
+    public Boolean getSolutionFound() {
+        return solutionFound;
+    }
 }

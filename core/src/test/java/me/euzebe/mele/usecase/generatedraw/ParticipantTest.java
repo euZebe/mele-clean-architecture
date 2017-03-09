@@ -14,13 +14,13 @@ public class ParticipantTest {
 		Participant participant = new Participant(randomName);
 		assertThat(participant.getName()).isEqualTo(randomName);
 		assertThat(participant.getAssigned()).isNull();
-		assertThat(participant.getAssignmentToString()).contains(randomName);
+		assertThat(participant.toString()).contains(randomName);
 
 		String randomAssignee = RandomStringUtils.random(27);
 		participant.setAssigned(randomAssignee);
 		assertThat(participant.getAssigned()).isEqualTo(randomAssignee);
-		assertThat(participant.getAssignmentToString()).contains(randomName);
-		assertThat(participant.getAssignmentToString()).contains(randomAssignee);
+		assertThat(participant.toString()).contains(randomName);
+		assertThat(participant.toString()).contains(randomAssignee);
 	}
 
 }
