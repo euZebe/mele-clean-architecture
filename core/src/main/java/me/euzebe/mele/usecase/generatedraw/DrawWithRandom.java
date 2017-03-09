@@ -29,7 +29,6 @@ import lombok.Getter;
 
 public class DrawWithRandom implements Draw {
 
-	@Getter
 	private LinkedHashMap<Integer, Participant> participantsByIndex = LinkedHashMap.empty();
 
 	private HashMap<String, Integer> participantsByName = HashMap.empty();
@@ -37,7 +36,8 @@ public class DrawWithRandom implements Draw {
 	@Getter
 	private String id;
 
-	private Boolean solutionFound;
+	@Getter
+	private DrawGenerationResult generationResult;
 
 	private HashSet<Tuple2<Integer, Integer>> byIndexConstraints = HashSet.empty();
 
@@ -65,12 +65,7 @@ public class DrawWithRandom implements Draw {
             		);
         });
 
-		try {
-            defineAssignments();
-            solutionFound = true;
-        } catch (NoSolutionException e) {
-            solutionFound = false;
-        }
+        defineAssignments();
 	}
 
 	/**
@@ -133,7 +128,7 @@ public class DrawWithRandom implements Draw {
 				.size();
 	}
 
-	private void defineAssignments() throws NoSolutionException {
+	private void defineAssignments() {
 		Store store = new Store();
 		IntVar[] vars = IntStream.range(0, participantsByIndex.size()) //
 				.mapToObj(i -> {
@@ -158,7 +153,8 @@ public class DrawWithRandom implements Draw {
         search.labeling(store, select);
 
         if (search.getSolutionListener().solutionsNo() == 0) {
-            throw new NoSolutionException();
+            generationResult = new DrawGenerationResult(false, "No solution found");
+            return;
         }
 
         int randomIndex = new Random().nextInt(search.getSolutionListener().solutionsNo()) + 1;
@@ -203,8 +199,4 @@ public class DrawWithRandom implements Draw {
 		return participantsByIndex.toStream() //
 				.map(tuple -> tuple._2);
 	}
-
-    public Boolean getSolutionFound() {
-        return solutionFound;
-    }
 }

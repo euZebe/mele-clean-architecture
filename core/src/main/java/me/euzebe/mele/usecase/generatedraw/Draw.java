@@ -9,6 +9,8 @@ public interface Draw {
 
 	public Seq<Participant> getParticipants();
 
+	public DrawGenerationResult getGenerationResult();
+
 	public static final Draw EMPTY = new Draw() {
 		@Override
 		public List<Participant> getParticipants() {
@@ -19,6 +21,11 @@ public interface Draw {
 		public String getId() {
 			return null;
 		}
+
+        @Override
+        public DrawGenerationResult getGenerationResult() {
+            return null;
+        }
 	};
 
 }

@@ -42,6 +42,7 @@ public class DrawTest {
     public void check_EMPTY_draw() {
         assertThat(Draw.EMPTY.getId()).isNull();
         assertThat(Draw.EMPTY.getParticipants()).isNull();
+        assertThat(Draw.EMPTY.getGenerationResult()).isNull();
     }
 
     @Test
@@ -96,6 +97,15 @@ public class DrawTest {
             assertThat(p.getAssigned()).isNotNull();
             assertThat(p.getAssigned()).isNotEqualTo(p.getName());
         });
+    }
+
+    @Test
+    public void should_return_an_empty_optional_if_no_solution_is_found() {
+        Option<Draw> draw = DrawWithRandom.generateWithoutSelfAssignment(List.of("Niobé"), List.empty());
+        DrawGenerationResult generationResult = draw.get().getGenerationResult();
+        assertThat(generationResult.isSolutionFound()).isFalse();
+        assertThat(generationResult.getMessage()).isNotEmpty();
+        System.out.println(draw.get());
     }
 
 }
