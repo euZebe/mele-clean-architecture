@@ -32,7 +32,7 @@ public class DrawTest {
 
     @Test
     public void test_toString() {
-        Option<Draw> draw = DrawWithRandom.generateWith("Niobé", "Ernest");
+        Option<Draw> draw = DrawWithRandom.generateWith(List.of("Niobé", "Ernest"), List.empty());
         assertThat(draw.isDefined()).isTrue();
         assertThat(draw.get().getId()).isNotNull();
         assertThat(draw.get().getParticipants().size()).isEqualTo(2);

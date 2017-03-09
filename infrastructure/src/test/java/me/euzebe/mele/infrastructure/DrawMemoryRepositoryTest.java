@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import javaslang.collection.List;
 import me.euzebe.mele.usecase.generatedraw.Draw;
+import me.euzebe.mele.usecase.generatedraw.DrawGenerationResult;
 import me.euzebe.mele.usecase.generatedraw.Participant;
 
 public class DrawMemoryRepositoryTest {
@@ -39,6 +40,11 @@ public class DrawMemoryRepositoryTest {
 
         @Override
         public List<Participant> getParticipants() {
+            return null;
+        }
+
+        @Override
+        public DrawGenerationResult getGenerationResult() {
             return null;
         }
 

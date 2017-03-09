@@ -22,7 +22,6 @@ import javaslang.Tuple2;
 import javaslang.collection.HashMap;
 import javaslang.collection.HashSet;
 import javaslang.collection.LinkedHashMap;
-import javaslang.collection.List;
 import javaslang.collection.Seq;
 import javaslang.control.Option;
 import lombok.Getter;
@@ -66,21 +65,6 @@ public class DrawWithRandom implements Draw {
         });
 
         defineAssignments();
-	}
-
-	/**
-	 * Generate a Draw if participants are valid
-	 *
-	 * @param participantsName
-	 *            - name of each participant to the draw
-	 * @return an empty Option if <code>participantsName</code> is invalid, an
-	 *         Option containing the draw otherwise.
-	 */
-	public static Option<Draw> generateWith(String... participantsName) {
-		List<String> names = List.of(participantsName) //
-				.toList();
-
-		return generateWith(names, List.empty());
 	}
 
 	public static Option<Draw> generateWith(Seq<String> names, Seq<NotAllowedConstraint> constraints) {

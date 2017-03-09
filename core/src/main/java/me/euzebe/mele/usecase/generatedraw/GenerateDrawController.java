@@ -1,5 +1,6 @@
 package me.euzebe.mele.usecase.generatedraw;
 
+import javaslang.collection.List;
 import javaslang.collection.Seq;
 import javaslang.control.Option;
 import me.euzebe.mele.spi.DrawsCatalog;
@@ -11,9 +12,9 @@ public class GenerateDrawController implements IGenerateDraws {
     public GenerateDrawController(DrawsCatalog drawsCatalog) {
         this.drawsCatalog = drawsCatalog;
     }
-    
+
 	public Option<Draw> generateDraw(Seq<String> names, Seq<NotAllowedConstraint> constraints) {
-		Option<Draw> optionalDraw = DrawWithRandom.generateWith(names, constraints);
+		Option<Draw> optionalDraw = DrawWithRandom.generateWithoutSelfAssignment(names, constraints);
 
 		optionalDraw.peek(drawsCatalog::add);
 
@@ -23,7 +24,7 @@ public class GenerateDrawController implements IGenerateDraws {
     @Override
     public Option<Draw> generateDraw(String... participantsName) {
         System.out.println("generating draw...");
-        Option<Draw> optionalDraw = DrawWithRandom.generateWith(participantsName);
+        Option<Draw> optionalDraw = DrawWithRandom.generateWithoutSelfAssignment(List.of(participantsName), List.empty());
 
         optionalDraw.peek(drawsCatalog::add);
 
