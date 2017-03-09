@@ -52,9 +52,9 @@ public class DrawTest {
 
     @Test
     public void should_return_false_when_a_nonexistent_name_is_passed_in_a_constraint() {
-        Seq<NotAllowedConstraint> constraints = List.of(new NotAllowedConstraint("Niobé", "Ernest"),
-                new NotAllowedConstraint("Eusèbe", "Ernest"));
-        Seq<String> names = List.of("Ezechiel", "Titouan");
+		Seq<NotAllowedConstraint> constraints = List.of(new NotAllowedConstraint("Niobé", "Ernest"), //
+				new NotAllowedConstraint("Ezechiel", "Ernest"));
+		Seq<String> names = List.of("Ezechiel", "Titouan");
         assertThat(DrawWithRandom.constraintsHaveOnlyExistingNames(constraints, names)).isFalse();
     }
 
@@ -76,15 +76,15 @@ public class DrawTest {
 
         assertThat(draw).isNotEmpty();
 
-        draw.get().getParticipants() //
-                .filter(p -> p.getName().equals("Niobé")) //
-                .andThen(p -> assertThat(p.getAssigned()).isNotEqualTo("Ernest"));
-        draw.get().getParticipants() //
-                .filter(p -> p.getName().equals("Ernest")) //
-                .andThen(p -> assertThat(p.getAssigned()).isNotEqualTo("Eusèbe"));
-        draw.get().getParticipants() //
-                .filter(p -> p.getName().equals("Eusèbe")) //
-                .andThen(p -> assertThat(p.getAssigned()).isNotEqualTo("Niobé"));
+		Participant participantNiobe = draw.get().getParticipants() //
+				.filter(p -> p.getName().equals("Niobé")).head();
+		assertThat(participantNiobe.getAssigned()).isNotEqualTo("Ernest");
+		Participant participantErnest = draw.get().getParticipants() //
+				.filter(p -> p.getName().equals("Ernest")).head();
+		assertThat(participantErnest.getAssigned()).isNotEqualTo("Eusèbe");
+		Participant participantEusebe = draw.get().getParticipants() //
+				.filter(p -> p.getName().equals("Eusèbe")).head();
+		assertThat(participantEusebe.getAssigned()).isNotEqualTo("Niobé");
     }
 
     @Test

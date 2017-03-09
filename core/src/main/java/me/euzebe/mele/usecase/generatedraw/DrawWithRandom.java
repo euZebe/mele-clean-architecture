@@ -146,10 +146,9 @@ public class DrawWithRandom implements Draw {
 
 
         for (int index = 0; index < solution.length; index++) {
-            int assigneeIndex = ((SmallDenseDomain) solution[index]).min;
-            participantsByIndex.get(index) //
-                .getOrElseThrow(() -> new IllegalArgumentException())
-                .setAssigned(participantsByIndex.get(assigneeIndex).get().getName());
+			int assigneeIndex = ((SmallDenseDomain) solution[index]).min;
+			participantsByIndex.get(index).get() //
+					.setAssigned(participantsByIndex.get(assigneeIndex).get().getName());
 		};
 	}
 
