@@ -4,7 +4,9 @@ import lombok.Getter;
 
 public class DrawGenerationResult {
 
-    @Getter
+	public static final String OK = "success";
+
+	@Getter
     private boolean solutionFound;
     @Getter
     private String message;

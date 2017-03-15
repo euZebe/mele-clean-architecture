@@ -13,6 +13,7 @@ public class GenerateDrawController implements IGenerateDraws {
         this.drawsCatalog = drawsCatalog;
     }
 
+	@Override
 	public Option<Draw> generateDraw(Seq<String> names, Seq<NotAllowedConstraint> constraints) {
 		Option<Draw> optionalDraw = DrawWithRandom.generateWithoutSelfAssignment(names, constraints);
 

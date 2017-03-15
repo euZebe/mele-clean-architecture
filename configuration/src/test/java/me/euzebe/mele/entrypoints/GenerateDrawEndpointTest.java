@@ -39,22 +39,37 @@ public class GenerateDrawEndpointTest {
                 .contains("Hi all!");
     }
 
+	@Test
+	public void should_return_a_draw_when_input_is_valid() {
+		DrawRequest request = new DrawRequest().withParticipants(generateParticipantName(), //
+				generateParticipantName(), //
+				generateParticipantName());
+		DrawResponse drawResponse = restTemplate.postForObject(getEndpointBaseRoute() + "generateDraw", request, DrawResponse.class);
+
+		assertThat(drawResponse).isNotNull();
+		assertThat(drawResponse.getDrawID()).isNotNull();
+		assertThat(drawResponse.getAssignments().size()).isEqualTo(3);
+		drawResponse.getAssignments().forEach((participant, assignee) -> {
+			assertThat(participant).isNotNull();
+			assertThat(assignee).isNotNull();
+		});
+	}
+
     @Test
-    public void should_return_a_draw_when_input_is_valid() {
-        DrawRequest request = new DrawRequest().withParticipants(
-                generateParticipantName(), //
-                generateParticipantName(),  //
-                generateParticipantName());
+    public void should_return_a_draw_considering_constraints() {
+		String participant1 = "Niobé";
+		String participant2 = "Eusèbe";
+		DrawRequest request = new DrawRequest().withParticipants(
+participant1, //
+				participant2, //
+				"Julia") //
+				.withConstraint(participant1, participant2);
+        
         DrawResponse drawResponse = restTemplate.postForObject(getEndpointBaseRoute() + "generateDraw", request,
                 DrawResponse.class);
 
         assertThat(drawResponse).isNotNull();
-        assertThat(drawResponse.getDrawID()).isNotNull();
-        assertThat(drawResponse.getAssignments().size()).isEqualTo(3);
-        drawResponse.getAssignments().forEach((participant, assignee) -> {
-            assertThat(participant).isNotNull();
-            assertThat(assignee).isNotNull();
-        });
+		assertThat(drawResponse.getAssignments().get(participant1)).isNotEqualTo(participant2);
     }
 
 	private String generateParticipantName() {

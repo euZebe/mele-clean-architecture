@@ -40,7 +40,7 @@ public class DrawTest {
     @Test
     public void check_EMPTY_draw() {
         assertThat(Draw.EMPTY.getId()).isNull();
-        assertThat(Draw.EMPTY.getParticipants()).isNull();
+		assertThat(Draw.EMPTY.getParticipants()).isEmpty();
         assertThat(Draw.EMPTY.getGenerationResult()).isNull();
     }
 

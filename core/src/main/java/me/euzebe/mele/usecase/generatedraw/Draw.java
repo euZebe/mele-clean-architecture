@@ -14,7 +14,7 @@ public interface Draw {
 	public static final Draw EMPTY = new Draw() {
 		@Override
 		public List<Participant> getParticipants() {
-			return null;
+			return List.empty();
 		}
 
 		@Override
